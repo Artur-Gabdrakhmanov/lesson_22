@@ -18,7 +18,6 @@ class DemoQaWithEnv:
     def add_product_to_cart(self):
         self.demoqa.post("addproducttocart/catalog/31/1/1")
 
-
     @property
     def session_reqres(self):
         return self.reqres

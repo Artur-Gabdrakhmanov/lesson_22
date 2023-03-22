@@ -18,6 +18,9 @@ def test_filling_cart(demoshop, app):
 
 
 def test_delete_product_from_cart(demoshop, app):
+    app.open('')
+    with allure.step('Added cart'):
+        demoshop.add_product_to_cart()
     with allure.step('Remove cart'):
         app.element('.ico-cart').click()
         app.element('[name="removefromcart"]').click()

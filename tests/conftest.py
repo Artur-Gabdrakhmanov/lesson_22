@@ -13,9 +13,18 @@ def pytest_addoption(parser):
 
 
 @pytest.fixture(scope='session')
-def demoshop(request):
-    env = request.config.getoption('--env')
+def env(request):
+    return request.config.getoption("--env")
+
+
+@pytest.fixture(scope='session')
+def demoshop(env):
     return DemoQaWithEnv(env)
+
+
+@pytest.fixture(scope='session')
+def reqres(env):
+    return DemoQaWithEnv(env).reqres
 
 
 @pytest.fixture(scope='session')
@@ -25,7 +34,7 @@ def cookie(demoshop):
     return authorization_cookie
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def app(demoshop, cookie):
     browser.config.base_url = demoshop.demoqa.url
     browser.config.window_width = 1920
@@ -34,9 +43,3 @@ def app(demoshop, cookie):
     browser.driver.add_cookie({"name": "NOPCOMMERCE.AUTH", "value": cookie})
     yield browser
     browser.quit()
-
-
-@pytest.fixture(scope='session')
-def reqres(request):
-    env = request.config.getoption('--env')
-    return DemoQaWithEnv(env).session_reqres
